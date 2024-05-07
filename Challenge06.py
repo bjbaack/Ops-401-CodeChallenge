@@ -5,6 +5,7 @@
 # Date of latest revision:      05/06/2024
 # Purpose:             
 
+
 from cryptography.fernet import Fernet
 import os
 
@@ -47,6 +48,18 @@ def decrypt_file(file_path, key):
         print("File decrypted successfully!")
     except Exception as e:
         print(f"Error decrypting file: {e}")
+
+def encrypt_message(message, key):
+    """Encrypt a plaintext message."""
+    f = Fernet(key)
+    encrypted_message = f.encrypt(message.encode())
+    return encrypted_message
+
+def decrypt_message(encrypted_message, key):
+    """Decrypt an encrypted message."""
+    f = Fernet(key)
+    decrypted_message = f.decrypt(encrypted_message)
+    return decrypted_message.decode()
 
 if __name__ == "__main__":
     key = load_key()
