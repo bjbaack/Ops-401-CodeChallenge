@@ -5,16 +5,10 @@
 # Date of latest revision:      05/15/2024
 # Purpose:                      Import Scapy and scan ports.
 
-#!/usr/bin/env python3
-
-# Script Name:                  Import Scapy
-# Author:                       Brad Baack
-# Date of latest revision:      05/15/2024
-# Purpose:                      Import Scapy and scan ports.
-
 import os  # Used to check for root privileges
 import sys  # Used to exit the script if not run as root
-from scapy.all import sr1, IP, TCP, ICMP, sr  # Scapy components for network packet creation and handling
+from scapy.all import sr1, IP, TCP, ICMP, sr, RandShort  # Scapy components for network packet creation and handling
+import ipaddress  # Used to validate network addresses and CIDR notation
 
 # Check for root privileges
 if os.geteuid() != 0:
@@ -24,8 +18,8 @@ if os.geteuid() != 0:
 # Function to scan TCP ports on a target host
 def tcp_port_scanner(host, start_port, end_port):
     for port in range(start_port, end_port + 1):
-        # Create a SYN packet for the current port
-        packet = IP(dst=host) / TCP(dport=port, flags='S')
+        # Create a SYN packet for the current port with a random source port
+        packet = IP(dst=host) / TCP(sport=RandShort(), dport=port, flags='S')
         # Send the packet and wait for a response
         response = sr1(packet, timeout=1, verbose=0)
 
@@ -35,7 +29,7 @@ def tcp_port_scanner(host, start_port, end_port):
                 if tcp_layer.flags == 0x12:  # SYN-ACK response (port is open)
                     print(f"Port {port} is open.")
                     # Send a RST packet to close the connection
-                    rst_pkt = IP(dst=host) / TCP(dport=port, flags='R')
+                    rst_pkt = IP(dst=host) / TCP(sport=RandShort(), dport=port, flags='R')
                     sr1(rst_pkt, timeout=1, verbose=0)
                 elif tcp_layer.flags == 0x14:  # RST-ACK response (port is closed)
                     print(f"Port {port} is closed.")
@@ -75,6 +69,33 @@ def icmp_ping_sweep(network):
 
     # Print the total number of live hosts found
     print(f"Total live hosts: {live_hosts}")
+
+# Function to perform an ICMP ping to check if the host is responsive
+def icmp_ping(host):
+    # Create an ICMP echo request packet
+    packet = IP(dst=host) / ICMP()
+    # Send the packet and wait for a response
+    response = sr1(packet, timeout=1, verbose=0)
+
+    if response:  # If a response is received
+        if response.haslayer(ICMP):  # Check if the response has an ICMP layer
+            icmp_layer = response.getlayer(ICMP)
+            if icmp_layer.type == 0:  # Echo Reply
+                print(f"{host} is responding.")
+                return True
+            elif icmp_layer.type == 3 and icmp_layer.code in [1, 2, 3, 9, 10, 13]:
+                # Host is actively blocking ICMP traffic
+                print(f"{host} is actively blocking ICMP traffic.")
+            else:
+                # Host is unresponsive to ICMP ping
+                print(f"{host} is unresponsive.")
+        else:
+            # Host is unresponsive to ICMP ping
+            print(f"{host} is unresponsive.")
+    else:
+        # Host is down or unresponsive to ICMP ping
+        print(f"{host} is down or unresponsive.")
+    return False
 
 # Main section of the script
 if __name__ == "__main__":
