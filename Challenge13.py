@@ -100,34 +100,20 @@ def icmp_ping(host):
 # Main section of the script
 if __name__ == "__main__":
     while True:
-        # Prompt the user to select a mode
-        print("Select Mode:")
-        print("1. TCP Port Range Scanner")
-        print("2. ICMP Ping Sweep")
-        mode = input("Enter choice: ")
+        # Prompt the user to enter an IP address to target
+        target_ip = input("Enter the IP address to scan: ")
 
-        if mode == '1':
-            # If mode 1 is selected, prompt for IP address and port range
-            host_ip = input("Enter the IP address to scan: ")
+        # Perform an ICMP ping to check if the host is responsive
+        if icmp_ping(target_ip):
             try:
+                # Prompt the user to enter the range of ports to scan
                 start_port = int(input("Enter the start port: "))
                 end_port = int(input("Enter the end port: "))
-                # Perform a TCP port scan on the specified IP address and port range
-                tcp_port_scanner(host_ip, start_port, end_port)
+                # Perform a TCP port scan on the target IP address within the specified port range
+                tcp_port_scanner(target_ip, start_port, end_port)
             except ValueError:
                 # Handle invalid port number input
                 print("Invalid port number. Please enter numeric values.")
-        elif mode == '2':
-            # If mode 2 is selected, prompt for network address with CIDR block
-            network = input("Enter the network address with CIDR block (e.g., 192.168.1.0/24): ")
-            try:
-                # Validate the network address
-                ipaddress.ip_network(network, strict=False)
-                # Perform an ICMP ping sweep on the specified network
-                icmp_ping_sweep(network)
-            except ValueError:
-                # Handle invalid network address input
-                print("Invalid network address. Please enter a valid CIDR notation.")
         else:
-            # Handle invalid mode selection
-            print("Invalid choice. Please select 1 or 2.")
+            # If the host is not responsive to ICMP ping, display a message
+            print("Host is not responsive to ICMP ping.")
