@@ -46,3 +46,7 @@ if __name__ == "__main__":  # This condition ensures the script runs only if it 
             break  # Exit the loop and end the program if user selects mode 3
         else:
             print("Invalid selection...")  # Print a message if the user enters an invalid selection
+
+
+#Resources
+# https://www.geeksforgeeks.org/iterate-over-a-set-in-python/
