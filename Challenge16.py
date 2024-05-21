@@ -13,7 +13,7 @@ def iterator():
     # This function iterates over each word in the provided wordlist file and prints it with a delay.
     filepath = input("Enter your dictionary filepath:\n")  # Prompt user for the file path
     try:
-        with open(filepath, encoding="ISO-8859-1") as file:  # Open the file with appropriate encoding
+        with open(filepath, encoding="rockyou.txt") as file:  # Open the file with appropriate encoding
             for line in file:  # Read each line in the file
                 word = line.strip()  # Strip any leading/trailing whitespace from the line
                 print(word)  # Print the current word
@@ -26,7 +26,7 @@ def check_password():
     user_string = input("Enter the string to search: ")  # Prompt user for the string to search
     filepath = input("Enter your dictionary filepath:\n")  # Prompt user for the file path
     try:
-        with open(filepath, encoding="ISO-8859-1") as file:  # Open the file with appropriate encoding
+        with open(filepath, encoding="rockyou.txt") as file:  # Open the file with appropriate encoding
             words = file.read().splitlines()  # Read all lines into a list of words
             if user_string in words:  # Check if the user-provided string is in the list
                 print("The word is in the dictionary")  # Print if found
