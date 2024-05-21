@@ -7,33 +7,55 @@
 
 # Import libraries
 import time
+import getpass
+import os
 
 # Declare functions
 def iterator():
-    # This function iterates over each word in the provided wordlist file and prints it with a delay.
-    filepath = input("Enter your dictionary filepath:\n")  # Prompt user for the file path
-    try:
-        with open(filepath, encoding="rockyou.txt") as file:  # Open the file with appropriate encoding
-            for line in file:  # Read each line in the file
-                word = line.strip()  # Strip any leading/trailing whitespace from the line
-                print(word)  # Print the current word
-                time.sleep(1)  # Add a delay of 1 second
-    except FileNotFoundError:
-        print(f"File not found: {filepath}")  # Handle the case where the file is not found
+    filepath = input("Enter your dictionary filepath:\n") or "rockyou.txt"  # test filepath
+    #filepath = '/home/osboxes/Desktop/rockyou2.txt' # test filepath
+
+    if not os.path.isfile(filepath):
+        print(f"File not found: {filepath}")
+        return
+    
+    file = open(filepath, encoding="ISO-8859-1")  # address encoding problem
+    line = file.readline()
+    while line:
+        line = line.rstrip()
+        word = line
+        print(word)
+        time.sleep(1)
+        line = file.readline()
+    file.close()
 
 def check_password():
-    # This function checks if a user-provided string exists in the provided wordlist file.
-    user_string = input("Enter the string to search: ")  # Prompt user for the string to search
-    filepath = input("Enter your dictionary filepath:\n")  # Prompt user for the file path
-    try:
-        with open(filepath, encoding="rockyou.txt") as file:  # Open the file with appropriate encoding
-            words = file.read().splitlines()  # Read all lines into a list of words
-            if user_string in words:  # Check if the user-provided string is in the list
-                print("The word is in the dictionary")  # Print if found
-            else:
-                print("The word is not in the dictionary")  # Print if not found
-    except FileNotFoundError:
-        print(f"File not found: {filepath}")  # Handle the case where the file is not found
+    usr_password = getpass.getpass(prompt="Please enter a password: ")
+    usr_filepath = input("Let's check the strength of that password.\nPlease enter a dictionary filepath:\n") or "rockyou.txt"  # test filepath
+    #usr_filepath = '/home/osboxes/Desktop/rockyou2.txt' # test filepath
+
+    if not os.path.isfile(usr_filepath):
+        print(f"File not found: {usr_filepath}")
+        return
+    
+    print(f"Checking password against the words in '{usr_filepath}', just a moment.")
+    t1 = time.time()
+    file = open(usr_filepath, encoding="ISO-8859-1")  # address encoding problem
+    line = file.readline()
+    wordlist = []
+    while line:
+        line = line.rstrip()
+        word = line
+        wordlist.append(word)
+        line = file.readline()
+    file.close()
+    
+    if usr_password not in wordlist:
+        print("Your password is acceptable. Good job.")
+    else:
+        print("Your password was found in the dictionary. Please choose another password.")
+    t2 = time.time()
+    print(f"Password check completed in {t2 - t1:.2f} seconds.")
 
 # Main
 if __name__ == "__main__":  # This condition ensures the script runs only if it is executed directly
@@ -54,6 +76,5 @@ if __name__ == "__main__":  # This condition ensures the script runs only if it 
         else:
             print("Invalid selection...")  # Print a message if the user enters an invalid selection
 
-
-#Resources
+# Resources
 # https://www.geeksforgeeks.org/iterate-over-a-set-in-python/
