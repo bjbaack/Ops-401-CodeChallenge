@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+
+# Script Name:                  Brute Force pt 1
+# Author:                       Brad Baack
+# Date of latest revision:      05/21/2024
+# Purpose:                      Create a brute force attack.
+
 # Import libraries
 import time
 
