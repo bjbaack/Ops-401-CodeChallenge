@@ -116,3 +116,4 @@ if __name__ == "__main__":  # This condition ensures the script runs only if it 
 
 # Resources
 # https://www.geeksforgeeks.org/iterate-over-a-set-in-python/
+# I also worked with Steve on this one a little an I put my code in GPT for the line by line annotation for future reference. 
