@@ -113,3 +113,7 @@ def main():
 
 if __name__ == "__main__":
     main()  # Run the main function if the script is executed directly
+
+# Resources
+# https://docs.python.org/3/library/zipfile.html#module-zipfile
+# Chat Gpt was used to help me figure out how to dismantle my previous code and create a function that worked. I also use it for all annotations on each line for later use. 
