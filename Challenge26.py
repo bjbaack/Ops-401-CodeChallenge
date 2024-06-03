@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-# Script Name:                  Brute Force pt 3
+# Script Name:                  Add Loggingn to a script
 # Author:                       Brad Baack
-# Date of latest revision:      05/22/2024
-# Purpose:                      Create a brute force attack.
+# Date of latest revision:      06/3/2024
+# Purpose:                      Creat logs for Brute force attack
 
 import time  # Import time module for delays
 import getpass  # Import getpass module to securely get user passwords
