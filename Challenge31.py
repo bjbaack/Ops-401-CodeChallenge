@@ -58,3 +58,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+# https://www.howtogeek.com/112674/how-to-find-files-and-folders-in-linux-using-the-command-line/
+# https://www.howtogeek.com/206097/how-to-use-find-from-the-windows-command-prompt/
