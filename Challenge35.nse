@@ -1,9 +1,3 @@
-description = [[
-Custom NSE script to gather basic information about the target web server.
-]]
-
-author = "Your Name"
-
 license = "Same as Nmap--See https://nmap.org/book/man-legal.html"
 
 categories = {"discovery", "safe"}
