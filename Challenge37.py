@@ -5,9 +5,6 @@
 # Date of latest revision:      06/18/2024
 # Purpose:                      Cookies 
 
-#!/usr/bin/env python3
-
-# The below Python script shows one possible method to return the cookie from a site that supports cookies.
 
 import requests
 import webbrowser
@@ -73,3 +70,7 @@ def bringforthcookiemonster_with_hands():
         ''')
 
 bringforthcookiemonster_with_hands()
+
+# Resource
+# How To Get / Set HTTP Headers, Cookies And Manage Sessions Using Python Requests Module
+# https://www.dev2qa.com/how-to-get-set-http-headers-cookies-and-manage-sessions-use-python-requests-module/
